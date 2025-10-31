@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/wsdjeg/scrollbar.nvim/compare/v1.0.0...v1.1.0) (2025-10-31)
+
+
+### Features
+
+* ignore events when update scrollbar ([b2d92d9](https://github.com/wsdjeg/scrollbar.nvim/commit/b2d92d94e7119d696d32a5a74134182c1901513c))
+
 ## 1.0.0 (2025-03-13)
 
 
