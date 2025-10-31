@@ -56,14 +56,15 @@ local function create_scrollbar_buffer(size, lines)
 end
 
 function M.show()
+    local saved_ei = vim.o.eventignore
+    vim.o.eventignore = 'all'
     for _, ft in ipairs(get('excluded_filetypes')) do
         if ft == vim.o.filetype then
             M.clear()
+            vim.o.eventignore = saved_ei
             return
         end
     end
-    local saved_ei = vim.o.eventignore
-    vim.o.eventignore = 'all'
     local winnr = vim.fn.winnr()
     local bufnr = vim.fn.bufnr()
     local winid = vim.fn.win_getid()
@@ -165,7 +166,10 @@ function M.setup(opt)
     vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost' }, {
         pattern = { '*' },
         callback = function(ev)
+            local saved_ei = vim.o.eventignore
+            vim.o.eventignore = 'all'
             M.clear()
+            vim.o.eventignore = saved_ei
         end,
         group = augroup,
     })
