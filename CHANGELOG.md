@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/wsdjeg/scrollbar.nvim/compare/v1.1.0...v1.1.1) (2025-11-24)
+
+
+### Bug Fixes
+
+* add luarocks ([41b6291](https://github.com/wsdjeg/scrollbar.nvim/commit/41b62911a364ab3d87884b60aa0addaead009984))
+
 ## [1.1.0](https://github.com/wsdjeg/scrollbar.nvim/compare/v1.0.0...v1.1.0) (2025-10-31)
 
 
