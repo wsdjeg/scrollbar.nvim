@@ -117,17 +117,18 @@ function M.show()
         zindex = 10,
         border = 'none',
     }
-
-    log.info(
-        string.format(
-            'winid %d, bufnr %d, bar_size %d, row %d, col %d',
-            winid,
-            bufnr,
-            bar_size,
-            row,
-            col
+    if config.debug then
+        log.info(
+            string.format(
+                'winid %d, bufnr %d, bar_size %d, row %d, col %d',
+                winid,
+                bufnr,
+                bar_size,
+                row,
+                col
+            )
         )
-    )
+    end
 
     if util.is_float(scrollbar_winid) then
         if bar_size ~= scrollbar_size then
@@ -168,7 +169,9 @@ function M.setup(opt)
     vim.api.nvim_create_autocmd(events, {
         pattern = { '*' },
         callback = function(ev)
-            log.info(ev.event .. ' event triggered, display scrollbar')
+            if config.debug then
+                log.info(ev.event .. ' event triggered, display scrollbar')
+            end
             vim.schedule(M.show)
         end,
         group = augroup,
@@ -176,7 +179,9 @@ function M.setup(opt)
     vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost' }, {
         pattern = { '*' },
         callback = function(ev)
-            log.info(ev.event .. ' event triggered, clear scrollbar')
+            if config.debug then
+                log.info(ev.event .. ' event triggered, clear scrollbar')
+            end
             vim.schedule(function()
                 local saved_ei = vim.o.eventignore
                 vim.o.eventignore = 'all'
