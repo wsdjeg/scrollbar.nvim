@@ -23,12 +23,21 @@ local ns_id = -1
 local function add_highlight(winid, size)
     if vim.api.nvim_win_is_valid(winid) then
         local highlight = get('highlight')
-        vim.fn.clearmatches(winid)
-        vim.fn.matchaddpos(highlight.head, { 1 }, 10, ns_id, { window = winid })
+        local ns = vim.api.nvim_create_namespace('scrollbar.highlight')
+        vim.api.nvim_buf_set_extmark(scrollbar_bufnr, ns, 0, 0, {
+            end_col = 1,
+            hl_group = highlight.head,
+        })
         for i = 1, size - 2 do
-            vim.fn.matchaddpos(highlight.body, { i + 1 }, 10, ns_id, { window = winid })
+            vim.api.nvim_buf_set_extmark(scrollbar_bufnr, ns, i, 0, {
+                end_col = 1,
+                hl_group = highlight.body,
+            })
         end
-        vim.fn.matchaddpos(highlight.tail, { size }, 10, ns_id, { window = winid })
+        vim.api.nvim_buf_set_extmark(scrollbar_bufnr, ns, size - 1, 0, {
+            end_col = 1,
+            hl_group = highlight.tail,
+        })
     end
 end
 
