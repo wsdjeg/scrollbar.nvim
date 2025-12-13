@@ -46,7 +46,7 @@ local function gen_bar_lines(size)
     return lines
 end
 
-local function create_scrollbar_buffer(size, lines)
+local function create_scrollbar_buffer(lines)
     if not vim.api.nvim_buf_is_valid(scrollbar_bufnr) then
         scrollbar_bufnr = vim.api.nvim_create_buf(false, true)
     end
@@ -65,9 +65,8 @@ function M.show()
             return
         end
     end
-    local winnr = vim.fn.winnr()
-    local bufnr = vim.fn.bufnr()
-    local winid = vim.fn.win_getid()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local winid = vim.api.nvim_get_current_win()
     if util.is_float(winid) then
         M.clear()
         vim.o.eventignore = saved_ei
@@ -75,7 +74,7 @@ function M.show()
     end
 
     local total = vim.api.nvim_buf_line_count(bufnr)
-    local height = vim.fn.winheight(winnr)
+    local height = vim.api.nvim_win_get_height(winid)
 
     if total <= height then
         M.clear()
@@ -85,7 +84,7 @@ function M.show()
 
     local curr_line = vim.fn.line('w0')
     local bar_size = fix_size(height * height / total)
-    local width = vim.fn.winwidth(winnr)
+    local width = vim.api.nvim_win_get_width(winid)
     local col = width - get('width') - get('right_offset')
     local precision = height - bar_size
     local each_line = (total - height) * 1.0 / precision
@@ -110,6 +109,17 @@ function M.show()
         border = 'none',
     }
 
+    log.info(
+        string.format(
+            'winid %d, bufnr %d, bar_size %d, row %d, col %d',
+            winid,
+            bufnr,
+            bar_size,
+            row,
+            col
+        )
+    )
+
     if util.is_float(scrollbar_winid) then
         if bar_size ~= scrollbar_size then
             scrollbar_size = bar_size
@@ -120,13 +130,8 @@ function M.show()
     else
         scrollbar_size = bar_size
         local bar_lines = gen_bar_lines(bar_size)
-        scrollbar_bufnr = create_scrollbar_buffer(bar_size, bar_lines)
+        scrollbar_bufnr = create_scrollbar_buffer(bar_lines)
         scrollbar_winid = vim.api.nvim_open_win(scrollbar_bufnr, false, opts)
-        -- vim.fn.setwinvar(
-        -- vim.fn.win_id2win(scrollbar_winid),
-        -- '&winhighlight',
-        -- 'Normal:ScrollbarWinHighlight'
-        -- )
     end
     add_highlight(scrollbar_winid, scrollbar_size)
     vim.o.eventignore = saved_ei
@@ -138,19 +143,14 @@ function M.clear()
     end
 end
 
-function M.usable()
-    return true
-end
-
 function M.setup(opt)
     config = require('scrollbar.config').setup(opt)
     local augroup = vim.api.nvim_create_augroup('scrollbar.nvim', { clear = true })
     local events = vim.tbl_filter(function(ev)
         return vim.fn.exists('##' .. ev) == 1
     end, {
-        'BufEnter',
+        'BufWinEnter',
         'WinEnter',
-        'QuitPre',
         'CursorMoved',
         'VimResized',
         'FocusGained',
@@ -159,17 +159,21 @@ function M.setup(opt)
     vim.api.nvim_create_autocmd(events, {
         pattern = { '*' },
         callback = function(ev)
-            M.show()
+            log.info(ev.event .. ' event triggered, display scrollbar')
+            vim.schedule(M.show)
         end,
         group = augroup,
     })
     vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost' }, {
         pattern = { '*' },
         callback = function(ev)
-            local saved_ei = vim.o.eventignore
-            vim.o.eventignore = 'all'
-            M.clear()
-            vim.o.eventignore = saved_ei
+            log.info(ev.event .. ' event triggered, clear scrollbar')
+            vim.schedule(function()
+                local saved_ei = vim.o.eventignore
+                vim.o.eventignore = 'all'
+                M.clear()
+                vim.o.eventignore = saved_ei
+            end)
         end,
         group = augroup,
     })

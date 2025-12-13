@@ -23,6 +23,7 @@ local default_conf = {
         body = 'Normal',
         tail = 'Normal',
     },
+    debug = false,
 }
 
 local M = {}
