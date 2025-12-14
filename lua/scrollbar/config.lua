@@ -29,7 +29,8 @@ local default_conf = {
 local M = {}
 
 function M.setup(opt)
-    return vim.tbl_deep_extend('force', default_conf, opt or {})
+    default_conf = vim.tbl_deep_extend('force', default_conf, opt or {})
+    return default_conf
 end
 
 return M
