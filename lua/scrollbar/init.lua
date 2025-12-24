@@ -18,7 +18,6 @@ end
 local scrollbar_bufnr = -1
 local scrollbar_winid = -1
 local scrollbar_size = -1
-local ns_id = -1
 
 local function add_highlight(winid, size)
     if vim.api.nvim_win_is_valid(winid) then
@@ -53,6 +52,27 @@ local function gen_bar_lines(size)
     end
     table.insert(lines, shape.tail)
     return lines
+end
+
+                       -- 1        76      43
+function M.get_position(topline, total, height)
+    local bar_size = fix_size(height * height / total) -- 10
+    local precision = height - bar_size -- 33
+    local each_line = (total - height) * 1.0 / precision -- (76 - 43)/ 33
+    -- 可见区域的 topline
+    local visble_line = vim.fn.min({ topline, total - height + 1 }) -- 1, 76 - 43 = 33 + 1 1
+    local row
+    if each_line >= 1 then
+        row = vim.fn.float2nr(visble_line - 1 / each_line)
+    else
+        row = vim.fn.float2nr(visble_line - 1/ each_line - 1 / each_line)
+    end
+
+    row = vim.fn.float2nr(
+        (visble_line - 1) / each_line
+    )
+
+    return bar_size, row
 end
 
 local function create_scrollbar_buffer(lines)
@@ -91,19 +111,10 @@ function M.show()
         return
     end
 
-    local curr_line = vim.fn.line('w0')
-    local bar_size = fix_size(height * height / total)
     local width = vim.api.nvim_win_get_width(winid)
     local col = width - get('width') - get('right_offset')
-    local precision = height - bar_size
-    local each_line = (total - height) * 1.0 / precision
-    local visble_line = vim.fn.min({ curr_line, total - height + 1 })
-    local row
-    if each_line >= 1 then
-        row = vim.fn.float2nr(visble_line / each_line)
-    else
-        row = vim.fn.float2nr(visble_line / each_line - 1 / each_line)
-    end
+
+    local bar_size, row = M.get_position(vim.fn.line('w0'), total, height)
 
     local opts = {
         style = 'minimal',

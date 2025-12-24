@@ -1,0 +1,46 @@
+local s = require('scrollbar')
+local a, b = s.get_position(1, 76, 43)
+
+print(a, b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
