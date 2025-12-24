@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://github.com/wsdjeg/scrollbar.nvim/compare/v1.1.1...v1.2.0) (2025-12-24)
+
+
+### Features
+
+* add config.debug opt ([8f4a502](https://github.com/wsdjeg/scrollbar.nvim/commit/8f4a502b50e0ed005f3a2f74eda03aa8fa07dc68))
+* use extmart highlight buf ([1f2b31c](https://github.com/wsdjeg/scrollbar.nvim/commit/1f2b31cfc122166c6a04924187587fd8e21342ce))
+
+
+### Bug Fixes
+
+* fix scrollbar position ([74c54ec](https://github.com/wsdjeg/scrollbar.nvim/commit/74c54ec87f913148262579859009aeaf74fde8f3))
+* fix scrollbar row ([448e4e7](https://github.com/wsdjeg/scrollbar.nvim/commit/448e4e758917266ba33b966e71cf2fe149b9f10b))
+* fix setup function ([cf07da3](https://github.com/wsdjeg/scrollbar.nvim/commit/cf07da3f2316edacbcad13f21f1a0747002f241f))
+
 ## [1.1.1](https://github.com/wsdjeg/scrollbar.nvim/compare/v1.1.0...v1.1.1) (2025-11-24)
 
 
