@@ -1,5 +1,6 @@
 # scrollbar.nvim
 
+[![Run Tests](https://github.com/wsdjeg/scrollbar.nvim/actions/workflows/test.yml/badge.svg)](https://github.com/wsdjeg/scrollbar.nvim/actions/workflows/test.yml)
 [![GitHub License](https://img.shields.io/github/license/wsdjeg/scrollbar.nvim)](LICENSE)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/wsdjeg/scrollbar.nvim)](https://github.com/wsdjeg/scrollbar.nvim/issues)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/wsdjeg/scrollbar.nvim)](https://github.com/wsdjeg/scrollbar.nvim/commits/master/)
@@ -115,3 +116,4 @@ Love this plugin? Follow [me](https://wsdjeg.net/) on
 ## Feedback
 
 If you encounter any bugs or have suggestions, please file an issue in the [issue tracker](https://github.com/wsdjeg/scrollbar.vim/issues)
+

@@ -1,0 +1,16 @@
+# Test dependencies
+test/.deps/
+
+# Swap files
+*.swp
+*.swo
+
+# Temporary files
+*~
+*.out
+*.lua~
+
+# OS files
+.DS_Store
+Thumbs.db
+
