@@ -1,4 +1,4 @@
-local default_conf = {
+local defaults = {
     max_size = 10,
     min_size = 5,
     width = 1,
@@ -29,8 +29,8 @@ local default_conf = {
 local M = {}
 
 function M.setup(opt)
-    default_conf = vim.tbl_deep_extend('force', default_conf, opt or {})
-    return default_conf
+    return vim.tbl_deep_extend('force', defaults, opt or {})
 end
 
 return M
+

@@ -7,6 +7,16 @@ local scrollbar = require('scrollbar')
 
 TestExample = {}
 
+function TestExample:setUp()
+    config.setup({
+        max_size = 10,
+        min_size = 5,
+        width = 1,
+        right_offset = 1,
+        debug = false,
+    })
+end
+
 function TestExample:test_simple_assertion()
     lu.assertEquals(1 + 1, 2)
 end
